@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import socket
+import sys
+import uuid
+
+def host():
+    if len(sys.argv) == 3:
+        return sys.argv[1]
+    else:
+        return "localhost";
+
+def port():
+    if len(sys.argv) == 3:
+        return int(sys.argv[2])
+    else:
+        with open (".clpr-port") as clpr_port:
+            return int(clpr_port.read())
+
+def wrap(input, output):
+    marker = uuid.uuid4()
+    output.write(f"{marker}\n")
+    for line in input:
+        output.write(line)
+    output.write(f"{marker}\n")
+    output.flush()
+
+def unwrap(input, output):
+    marker = input.readline()
+    while True:
+        line = input.readline()
+        if line == marker:
+            input.close()
+            break
+        output.write(line)
+
+with socket.create_connection((host(), port())) as s:
+    repl = s.makefile("rw")
+    wrap(sys.stdin, repl)
+    unwrap(repl, sys.stdout)

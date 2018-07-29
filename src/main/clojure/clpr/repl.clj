@@ -7,32 +7,41 @@
            [java.io BufferedReader BufferedWriter StringReader StringWriter]
            [java.net ServerSocket Socket]))
 
+(defn p
+  "Pretty print a form."
+  [form]
+  (str/trim
+   (with-out-str (pprint form))))
+
 (defn run-repl
   ""
   [{::keys [port server] :as repl-server}]
-  (binding [*ns* (create-ns 'user)
-            *e nil
-            *1 nil
-            *2 nil
-            *3 nil]
-    (while true
-      (with-open [socket (.accept server)]
-        (try
-          (with-open [in (io/reader (-> socket
-                                       (.getInputStream)))
-                      out (io/writer (.getOutputStream socket))]
-            (let [buf (StringWriter.)
-                  code (Client/unwrap in (BufferedWriter. buf))
-                  lines (str "(do " (.toString buf) ")")]
-              (try
-                (let [result (str (eval (read-string lines)))]
-                  (Client/wrap (BufferedReader. (StringReader. result)) out))
-                (catch Throwable e
-                  (.printStackTrace e)
-                  (Client/wrap (BufferedReader. (StringReader. (str e))) out)))
-              (.read in)))
-          (catch Throwable e
-            (.printStackTrace e)))))))
+  (try
+    (binding [*ns* (create-ns 'user)
+              *e nil
+              *1 nil
+              *2 nil
+              *3 nil]
+      (while true
+        (with-open [socket (.accept server)]
+          (try
+            (with-open [in (io/reader (-> socket
+                                         (.getInputStream)))
+                        out (io/writer (.getOutputStream socket))]
+              (let [buf (StringWriter.)
+                    code (Client/unwrap in (BufferedWriter. buf))
+                    lines (str "(do " (.toString buf) ")")]
+                (try
+                  (let [result (str (eval (read-string lines)))]
+                    (Client/wrap (BufferedReader. (StringReader. result)) out))
+                  (catch Throwable e
+                    (.printStackTrace e)
+                    (Client/wrap (BufferedReader. (StringReader. (p (Throwable->map e)))) out)))
+                (.read in)))
+            (catch Throwable e
+              (.printStackTrace e))))))
+    (catch Throwable e
+      (.printStackTrace e))))
 
 (defn start
   ""
@@ -77,4 +86,3 @@
         port (or port "0")
         repl (repl host (Integer/parseInt port))]
     (start repl)))
-

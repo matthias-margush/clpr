@@ -2,6 +2,7 @@ package clpr;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,6 +57,12 @@ public class Client {
     public static void main(String[] args) {
         String host = args[0];
         int port = Integer.parseInt(args[1]);
+        InputStream commandInput = System.in;
+
+        if (args.length > 2) {
+            System.out.printf("using command line input: %s\n", args[2]);
+            commandInput = new ByteArrayInputStream(args[2].getBytes());
+        }
 
         try (Socket socket = new Socket(host, port);
              InputStream fromRepl = socket.getInputStream();
