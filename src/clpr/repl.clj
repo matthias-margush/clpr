@@ -104,8 +104,8 @@
 (defn repl
   "Creates a repl server that will listen on `host` and `port`."
   [host port]
-  (atom {::host host
-         ::port port
+  (atom {::host (or host "localhost")
+         ::port (or (bigint port) 0)
          ::*1 (atom nil)
          ::*2 (atom nil)
          ::*3 (atom nil)
@@ -114,7 +114,5 @@
 (defn -main
   "Runs the repl server from the command line."
   [& [host port]]
-  (let [host (or host "localhost")
-        port (or port "0")
-        repl (repl host (Integer/parseInt port))]
+  (let [repl (repl host port)]
     (start repl)))

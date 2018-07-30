@@ -1,25 +1,20 @@
 # lein-clpr
 
-A Leiningen plugin to do many wonderful things.
+[![Clojars Project](https://img.shields.io/clojars/v/lein-clpr.svg)](https://clojars.org/lein-clpr)
 
-## Usage
+A Leiningen plugin for [clpr](http://github.com/matthias-margush/clpr)
 
-FIXME: Use this for user-level plugins:
-
-Put `[lein-clpr "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your `:user`
+Put `[lein-clpr "0.1.2"]` into the `:plugins` vector of your `:user`
 profile.
 
-FIXME: Use this for project-level plugins:
+```
+჻ lein clpr
+clpr server started on port 50410 on host localhost
 
-Put `[lein-clpr "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.clj.
-
-FIXME: and add an example usage that actually makes sense:
-
-    $ lein clpr
-
+```
 ## License
 
-Copyright © 2018 FIXME
+Copyright © 2018 Matthias Margush
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

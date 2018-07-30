@@ -1,14 +1,12 @@
 # clpr-tools
 
-A Clojure library designed to ... well, that part is up to you.
+[![Clojars Project](https://img.shields.io/clojars/v/clpr-tools.svg)](https://clojars.org/clpr-tools)
 
-## Usage
-
-FIXME
+Some useful tools to use with [clpr](https://github.com/matthias-margush/clpr)
 
 ## License
 
-Copyright © 2018 FIXME
+Copyright © 2018 Matthias Margush
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
