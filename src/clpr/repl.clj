@@ -30,7 +30,7 @@
         (reset! (::*3 repl) @(::*2 repl))
         (reset! (::*2 repl) @(::*1 repl))
         (reset! (::*1 repl) result)
-        (p result))
+        (str result))
       (catch Throwable e
         (let [ep (p (Throwable->map e))]
           (reset! (::*e repl) ep)
@@ -46,7 +46,7 @@
         (when-not (= line marker)
           (.println out line)
           (recur (.readLine in)))))
-    (str "(do" (.toString buf) ")")))
+    (str "(do " (.toString buf) ")")))
 
 (defn- run-repl
   "Runs the repl server."
