@@ -1,4 +1,4 @@
-(defproject clpr "0.1.2"
+(defproject clpr "0.1.3"
   :description "(or \"(CL)ojure (PR)inter\" \"(C)lojure (L)ine (PR)inter\" \"(C)command (L)ine (PR)inter\")"
   :url "https://github.com/matthias-margush/clpr"
   :license {:name "Eclipse Public License"

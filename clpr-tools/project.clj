@@ -1,4 +1,4 @@
-(defproject clpr-tools "0.1.2"
+(defproject clpr-tools "0.1.3"
   :description "clpr tools"
   :url "https://github.com/matthias-margush/clpr"
   :license {:name "Eclipse Public License"

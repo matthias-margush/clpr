@@ -20,7 +20,7 @@
   "Returns the result of read/eval on lines, or the exception."
   [repl lines out]
   (binding [*clpr-out* out
-            *ns* (create-ns 'user)
+            *ns* @(::*ns* repl)
             *e @(::*e repl)
             *1 @(::*1 repl)
             *2 @(::*2 repl)
@@ -30,6 +30,7 @@
         (reset! (::*3 repl) @(::*2 repl))
         (reset! (::*2 repl) @(::*1 repl))
         (reset! (::*1 repl) result)
+        (reset! (::*ns* repl) *ns*)
         (str result))
       (catch Throwable e
         (let [ep (p (Throwable->map e))]
@@ -105,11 +106,12 @@
   "Creates a repl server that will listen on `host` and `port`."
   [host port]
   (atom {::host (or host "localhost")
-         ::port (or (bigint port) 0)
+         ::port (if port (bigint port) 0)
          ::*1 (atom nil)
          ::*2 (atom nil)
          ::*3 (atom nil)
-         ::*e (atom nil)}))
+         ::*e (atom nil)
+         ::*ns* (atom (create-ns 'user))}))
 
 (defn -main
   "Runs the repl server from the command line."

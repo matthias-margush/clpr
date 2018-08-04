@@ -38,8 +38,8 @@ lein clpr
 
 After adding this to ~/.lein/profiles.clj:
 ```
-{:user {:dependencies [[clpr-tools "0.1.2"]]
-        :plugins [[lein-clpr "0.1.2"]]
+{:user {:dependencies [[clpr-tools "0.1.3"]]
+        :plugins [[lein-clpr "0.1.3"]]
         :clpr {:init (require 'clpr.tools)}}}
 ```
 
