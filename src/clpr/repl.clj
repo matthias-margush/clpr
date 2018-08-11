@@ -1,5 +1,5 @@
 (ns clpr.repl
-  "Simple repl server"
+  "Simple repl server."
   (:gen-class)
   (:require [clojure.pprint :refer [pprint]]
             [clojure.java.io :as io]
@@ -9,6 +9,11 @@
            [java.util UUID]))
 
 (def ^:dynamic *clpr-out*)
+(def project)
+
+(defn set-project!
+  [p]
+  (alter-var-root #'project (constantly p)))
 
 (defn- p
   "Pretty print a form."
@@ -33,7 +38,7 @@
         (reset! (::*ns* repl) *ns*)
         (str result))
       (catch Throwable e
-        (let [ep (p (Throwable->map e))]
+        (let [ep (Throwable->map e)]
           (reset! (::*e repl) ep)
           ep)))))
 

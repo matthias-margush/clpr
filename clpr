@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
 
+import argparse
+import io
 import socket
 import sys
 import uuid
 
-def host():
-    if len(sys.argv) == 3:
-        return sys.argv[1]
-    else:
-        return "localhost";
-
-def port():
-    if len(sys.argv) == 3:
-        return int(sys.argv[2])
-    else:
-        with open (".clpr-port") as clpr_port:
-            return int(clpr_port.read())
+def clpr_port():
+    with open (".clpr-port") as clpr_port:
+        return int(clpr_port.read())
 
 def wrap(input, output):
     marker = uuid.uuid4()
@@ -34,7 +27,39 @@ def unwrap(input, output):
             break
         output.write(line)
 
-with socket.create_connection((host(), port())) as s:
-    repl = s.makefile("rw")
-    wrap(sys.stdin, repl)
-    unwrap(repl, sys.stdout)
+parser = argparse.ArgumentParser(
+        """Sends forms to a clpr server and prints the response to stdout.
+           If args are provided on the command line, they are wrapped in 
+           parentheses. If no args are provided, forms are read from stdin.
+        """)
+parser.add_argument(
+        "--host",
+        default="localhost",
+        help="Hostname of the clpr server (localhost by default).")
+parser.add_argument(
+        "--port",
+        type=int,
+        help="""Port of the clpr server.
+                Reads the contents of `.clpr-port` if not specified.""")
+parser.add_argument(
+        "forms",
+        nargs="*",
+        help="Args will be wrapped in parens and sent to the clpr server.")
+
+args = parser.parse_args()
+
+input = sys.stdin
+if args.forms:
+    forms = " ".join(args.forms)
+    input = io.StringIO(f"({forms})\n")
+
+host = args.host
+port = args.port or clpr_port()
+
+try:
+    with socket.create_connection((host, port)) as s:
+        repl = s.makefile("rw")
+        wrap(input, repl)
+        unwrap(repl, sys.stdout)
+except ConnectionRefusedError:
+    print(f"Unable to connect to {host}:{port}, is clpr server running?")

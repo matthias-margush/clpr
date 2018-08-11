@@ -12,7 +12,9 @@
   (let [profile (or (:clpr (:profiles project)) clpr-profile)
         project (project/merge-profiles project [profile])
         init-options `(do ~(:init (:clpr project))
-                           (require 'clpr.repl))]
+                           (require 'clpr.repl)
+                           (clpr.repl/set-project! '~project))]
+
     (eval-in-project project
                      `(clpr.repl/-main ~@args)
                      init-options)))

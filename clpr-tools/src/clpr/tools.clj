@@ -2,14 +2,16 @@
   "clpr tools"
   (:require [cljfmt.main :as cljfmt]
             [clojure.repl :as repl]
+            [clojure.string :as str]
             [clojure.test :refer [*test-out*]]
             [clojure.tools.namespace.file :as ns-file]
             [clojure.tools.namespace.repl :as ns]
             [clpr.repl :refer [*clpr-out*]]
+            [clpr.tools.test-report :as clpr-report]
             [compliment.core :as cc]
             [eastwood.lint :as lint]
+            [eftest.report :refer [report-to-file]]
             [eftest.report.junit]
-            [eftest.report.pretty :as pretty-report]
             [eftest.runner :as ef]))
 
 (defn refresh
@@ -27,9 +29,13 @@
 (defn run-tests
   "Run all tests."
   []
-  (binding [*test-out* *clpr-out*
-            pretty-report/*fonts* nil]
-    (ef/run-tests (ef/find-tests ".") {:report eftest.report.pretty/report})))
+  (doseq [test-dir (:test-paths clpr.repl/project)]
+    (binding [*test-out* *clpr-out*
+              clpr-report/*test-dir* test-dir]
+      (ef/run-tests (ef/find-tests test-dir)
+                    {:report clpr-report/report
+                     :capture-output? false
+                     :multithread? false}))))
 
 (defn fmt
   "Formats the the file."
@@ -55,8 +61,9 @@
      (repl/source ~s)))
 
 (defn completions
-  ""
+  "Return possible completions of text `t` in `context`."
   [t ctx]
-  (into []
-        (cc/completions t {:ns *ns* :plain-candidates true})))
+  (binding [*out* *clpr-out*]
+    (doseq [completion (cc/completions t {:ns *ns* :plain-candidates true})]
+      (println completion))))
 
