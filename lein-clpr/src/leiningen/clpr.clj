@@ -4,7 +4,7 @@
             [leiningen.core.project :as project]))
 
 (def clpr-profile
-  {:dependencies '[[clpr "0.1.3"]]})
+  {:dependencies '[[clpr "0.1.4"]]})
 
 (defn clpr
   "Starts a clpr."

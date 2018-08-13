@@ -15,7 +15,8 @@
             [eftest.runner :as ef]))
 
 (defn refresh
-  "Refreshes namespaces that have changed and sets the current name space to the current file's."
+  "Refreshes namespaces that have changed and sets the current name space to
+  the current file's."
   [f]
   (ns/refresh)
   (eval (ns-file/read-file-ns-decl f)))
@@ -59,6 +60,12 @@
   [s]
   `(binding [*out* *clpr-out*]
      (repl/source ~s)))
+
+(defmacro dir
+  "Wraps clojure.repl/dir."
+  [s]
+  `(binding [*out* *clpr-out*]
+     (repl/dir ~s)))
 
 (defn completions
   "Return possible completions of text `t` in `context`."

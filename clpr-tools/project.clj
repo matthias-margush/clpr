@@ -1,4 +1,4 @@
-(defproject clpr-tools "0.1.3"
+(defproject clpr-tools "0.1.4"
   :description "clpr tools"
   :url "https://github.com/matthias-margush/clpr"
   :license {:name "Eclipse Public License"
@@ -10,4 +10,5 @@
                  [jonase/eastwood "0.2.8"]
                  [lein-kibit "0.1.6"]
                  [org.clojure/clojure "1.9.0"]
+                 [org.clojure/java.classpath "0.3.0"]
                  [org.clojure/tools.namespace "0.2.11"]])
