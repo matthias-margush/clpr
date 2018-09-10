@@ -45,45 +45,7 @@ After adding this to ~/.lein/profiles.clj:
 
 [clpr-tools](clpr-tools) provides some convenience wrappers that are useful for keybindings.
 
-Here are some ideas for vim keybindings:
-```
-" Start, stop and switch to clpr:
-autocmd FileType clojure nnoremap <silent> <localleader>si :terminal lein clpr<cr>:keepalt :file *clpr*<cr>:b#<cr>
-autocmd FileType clojure nnoremap <silent> <localleader>sq :bd! \*clpr\*<cr>
-autocmd FileType clojure nnoremap <silent> <localleader>ss :sb \*clpr\*<cr>
-
-" Refresh namespaces
-autocmd FileType clojure nnoremap <silent> <localleader>dr :AsyncRun echo '(clpr.tools/refresh "%:p")' \| clpr<cr>
-autocmd FileType clojure nnoremap <silent> <localleader>dR :AsyncRun echo '(clpr.tools/refresh-all "%:p")' \| clpr<cr>
-
-" Run tests
-autocmd FileType clojure nnoremap <silent> <localleader>tp :AsyncRun echo '(clpr.tools/run-tests)' \| clpr<cr>:copen<cr>
-
-" Show docs, source
-autocmd FileType clojure nnoremap <silent>K :!echo '(clpr.tools/doc <c-r><c-w>)' \| clpr<cr>
-autocmd FileType clojure nnoremap <silent> <localleader>s :!echo '(clpr.tools/source <c-r><c-w>)' \| clpr<cr>
-
-" Format the current buffer
-autocmd FileType clojure nnoremap <silent> <localleader>fb :w<cr>:!echo '(clpr.tools/fmt "%:p")' \| clpr<cr>:e %<cr>
-
-" Lint the project:
-nnoremap <localleader>pl :wa \| AsyncRun echo '(clpr.tools/lint)' \| clpr<cr>:copen<cr>
-
-" Eval movements and selections:
-autocmd FileType clojure nnoremap <silent> <localleader>ae :set opfunc=AsyncClojureEval<cr>g@
-autocmd FileType clojure vnoremap <silent> <localleader>ae :AsyncRun clpr<cr>
-autocmd FileType clojure nnoremap <silent> <localleader>e :set opfunc=ClojureEval<cr>g@
-autocmd FileType clojure vnoremap <silent> <localleader>e :w !clpr<cr>
-
-function! ClojureEval(type, ...)
-    '[,']w !clpr
-endfunction
-
-function! AsyncClojureEval(type, ...)
-    silent exe "'[,']AsyncRun clpr"
-    silent exe "copen"
-endfunction
-```
+I've started experimenting with some vim keybindings for this [here](https://github.com/matthias-margush/dot/blob/master/.config/nvim/clojure.vim).
 
 ## License
 
